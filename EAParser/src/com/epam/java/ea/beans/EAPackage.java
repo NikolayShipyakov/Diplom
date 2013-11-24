@@ -6,7 +6,9 @@ import java.util.List;
 public class EAPackage {
 
     private String name;
-    private List<EAPackage> packages = new ArrayList<EAPackage>();
+    private List<EAPackage> packages = null;
+    private List<EADiagram> diagrams = null;
+    private List<EAElement> elements = null;
 
     public String getName() {
         return name;
@@ -26,5 +28,21 @@ public class EAPackage {
 
     public void addPackage(EAPackage p){
         packages.add(p);
+    }
+
+    public List<EADiagram> getDiagrams() {
+        return diagrams;
+    }
+
+    public void setDiagrams(List<EADiagram> diagrams) {
+        this.diagrams = diagrams;
+    }
+
+    public List<EAElement> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<EAElement> elements) {
+        this.elements = elements;
     }
 }
