@@ -3,6 +3,8 @@ package com.epam.java.ea.parser;
 import com.epam.java.ea.beans.EADiagram;
 import com.epam.java.ea.beans.EAElement;
 import com.epam.java.ea.beans.EAPackage;
+import com.epam.java.ea.com.epam.java.ea.enums.DiagramType;
+import com.epam.java.ea.com.epam.java.ea.enums.ElementType;
 import org.sparx.Diagram;
 import org.sparx.Element;
 import org.sparx.Repository;
@@ -43,12 +45,6 @@ public class EAParser {
             packImpl.setDiagrams(diagrams);
             packImpl.setElements(elements);
             packages.add(packImpl);
-            for(org.sparx.Element el:p.GetElements()){
-                System.out.println(el.GetName());
-            }
-            for(org.sparx.Diagram el:p.GetDiagrams()){
-                System.out.println(el.GetName());
-            }
         }
         return packages;
     }
@@ -58,6 +54,8 @@ public class EAParser {
         for (Diagram d : pack.GetDiagrams()) {
             EADiagram diagram = new EADiagram();
             diagram.setName(d.GetName());
+            diagram.setType(DiagramType.getDiagramType(d.GetType()));
+            System.out.println(diagram.getType());
             diagrams.add(diagram);
         }
         return diagrams;
@@ -65,9 +63,10 @@ public class EAParser {
 
     private List<EAElement> getElements(org.sparx.Package pack) {
         List<EAElement> elements = new ArrayList<EAElement>();
-        for (Element d : pack.GetElements()) {
+        for (Element e : pack.GetElements()) {
             EAElement element = new EAElement();
-            element.setName(d.GetName());
+            element.setName(e.GetName());
+            element.setType(ElementType.getElementByName(e.GetType()));
             elements.add(element);
         }
         return elements;
