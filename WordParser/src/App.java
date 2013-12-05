@@ -1,6 +1,9 @@
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.epam.java.wordparser.Parser;
 import org.apache.poi.POITextExtractor;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -58,7 +61,7 @@ public class App {
 
         InputStream fs = null;
         try {
-            fs = new FileInputStream("C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx");
+            fs = new FileInputStream("D:\\Projects\\Diplom\\Diplom\\WordParser\\word_docs\\test2.docx");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -69,31 +72,38 @@ public class App {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < doc.getParagraphs().size() ; i++) {
+        StringBuilder textDoc = new StringBuilder();
+        Map<Long, String> paragraphs = new HashMap<Long, String>();
+        for (Integer i = 0; i < doc.getParagraphs().size() ; i++) {
             XWPFParagraph paragraph = doc.getParagraphs().get(i);
             //paragraph.getCTP().getRArray().
-            System.out.println(paragraph.getParagraphText());
-            for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
+            System.out.println(")" + paragraph.getParagraphText());
+            paragraphs.put(Long.parseLong(i.toString()), paragraph.getParagraphText());
+            /*for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
                 CTR run = paragraph.getCTP().getRArray()[j];
 
                 for (int k = 0; k < run.getTArray().length; k++) {
                     CTText text = run.getTArray()[k];
 
+                    textDoc.append(text.getStringValue());
                     // This will output the text contents
                     System.out.println(text.getStringValue());
 
                     // And this will set its contents
-                    text.setStringValue("Success!");
+                    //text.setStringValue("Success!");
                 }
-            }
+            } */
         }
+        Parser parser = new Parser(paragraphs);
+        parser.parseText();
+        //System.out.print(textDoc);
 
-        try {
+        /*try {
             doc.write(new FileOutputStream("C:\\output.docx"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }        */
     }
 }
