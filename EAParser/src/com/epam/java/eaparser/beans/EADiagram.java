@@ -1,6 +1,6 @@
-package com.epam.java.ea.beans;
+package com.epam.java.eaparser.beans;
 
-import com.epam.java.ea.com.epam.java.ea.enums.DiagramType;
+import com.epam.java.eaparser.com.epam.java.ea.enums.DiagramType;
 
 public class EADiagram {
     private String name;

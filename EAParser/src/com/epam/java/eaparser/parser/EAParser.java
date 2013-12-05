@@ -1,10 +1,10 @@
-package com.epam.java.ea.parser;
+package com.epam.java.eaparser.parser;
 
-import com.epam.java.ea.beans.EADiagram;
-import com.epam.java.ea.beans.EAElement;
-import com.epam.java.ea.beans.EAPackage;
-import com.epam.java.ea.com.epam.java.ea.enums.DiagramType;
-import com.epam.java.ea.com.epam.java.ea.enums.ElementType;
+import com.epam.java.eaparser.beans.EADiagram;
+import com.epam.java.eaparser.beans.EAElement;
+import com.epam.java.eaparser.beans.EAPackage;
+import com.epam.java.eaparser.com.epam.java.ea.enums.DiagramType;
+import com.epam.java.eaparser.com.epam.java.ea.enums.ElementType;
 import org.sparx.Diagram;
 import org.sparx.Element;
 import org.sparx.Repository;

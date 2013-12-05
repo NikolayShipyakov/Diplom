@@ -1,4 +1,4 @@
-package com.epam.java.ea.com.epam.java.ea.enums;
+package com.epam.java.eaparser.com.epam.java.ea.enums;
 
 public enum DiagramType {
     ACTIVITY,

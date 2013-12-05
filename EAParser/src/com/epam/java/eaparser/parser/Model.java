@@ -1,6 +1,6 @@
-package com.epam.java.ea.parser;
+package com.epam.java.eaparser.parser;
 
-import com.epam.java.ea.beans.EAPackage;
+import com.epam.java.eaparser.beans.EAPackage;
 
 import java.util.List;
 

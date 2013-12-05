@@ -1,6 +1,6 @@
-package com.epam.java.ea.beans;
+package com.epam.java.eaparser.beans;
 
-import com.epam.java.ea.com.epam.java.ea.enums.ElementType;
+import com.epam.java.eaparser.com.epam.java.ea.enums.ElementType;
 
 public class EAElement {
     private String name;

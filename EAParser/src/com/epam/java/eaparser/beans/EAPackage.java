@@ -1,6 +1,5 @@
-package com.epam.java.ea.beans;
+package com.epam.java.eaparser.beans;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EAPackage {

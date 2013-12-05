@@ -1,13 +1,7 @@
-import com.epam.java.ea.parser.EAParser;
-import com.epam.java.ea.parser.Model;
-import org.sparx.Diagram;
-import org.sparx.Repository;
+import com.epam.java.eaparser.parser.EAParser;
+import com.epam.java.eaparser.parser.Model;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * Created with IntelliJ IDEA.
