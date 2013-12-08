@@ -61,7 +61,8 @@ public class App {
 
         InputStream fs = null;
         try {
-            fs = new FileInputStream("D:\\Projects\\Diplom\\Diplom\\WordParser\\word_docs\\test2.docx");
+            //fs = new FileInputStream("D:\\Projects\\Diplom\\Diplom\\WordParser\\word_docs\\test2.docx");
+            fs = new FileInputStream("C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
