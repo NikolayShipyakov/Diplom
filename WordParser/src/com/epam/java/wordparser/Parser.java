@@ -12,6 +12,7 @@ public class Parser {
     List<PackageBean> packagesList = new ArrayList<PackageBean>();
     private Map<Long, String> text;
     private static final Pattern PACKAGE_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_OPEN);
+    private static final Pattern PACKAGE_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_ROOT_OPEN);
     private static final Pattern PACKAGE_CLOSE_PATTERN = Pattern.compile(ParserConstants.PACKAGE_CLOSE);
 
     public Parser(Map<Long, String> text) {
@@ -60,12 +61,17 @@ public class Parser {
         public void parsePackage() {
             packageBean = new PackageBean();
             packageBean.setName(parseName(packageText.get(0)));
+            packageBean.setRoot(isRootPackage(packageText.get(0)));
         }
 
         private String parseName(String text) {
             int begin = text.indexOf("'");
             int end = text.indexOf("'", begin + 1);
             return text.substring(begin, end);
+        }
+
+        private boolean isRootPackage(String tag){
+            return PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
         }
     }
 }
