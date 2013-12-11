@@ -1,5 +1,6 @@
 package com.epam.java.wordparser;
 
+import com.epam.java.wordparser.beans.ObjectBean;
 import com.epam.java.wordparser.beans.PackageBean;
 
 import java.util.ArrayList;
@@ -74,6 +75,15 @@ public class Parser {
 
         private boolean isRootPackage(String tag){
             return PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
+        }
+
+        private List<ObjectBean> getObjects(){
+             for(String paragraph:packageText){
+                 if(OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
+
+                 }
+             }
+            return null;
         }
     }
 }
