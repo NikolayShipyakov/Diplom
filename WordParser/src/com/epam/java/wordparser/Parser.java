@@ -77,12 +77,20 @@ public class Parser {
             return PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
         }
 
-        private List<ObjectBean> getObjects(){
-             for(String paragraph:packageText){
-                 if(OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
-
-                 }
-             }
+        private List<ObjectBean> getObjects() {
+            List<ObjectBean> objects = new ArrayList<ObjectBean>();
+            List<String> objectText = null;
+            for (String paragraph : packageText) {
+                if (OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
+                    objectText = new ArrayList<String>();
+                }
+                if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
+                    objectText = null;
+                }
+                if (objectText != null) {
+                    objectText.add(paragraph);
+                }
+            }
             return null;
         }
     }
