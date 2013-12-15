@@ -65,6 +65,7 @@ public class Parser {
             packageBean = new PackageBean();
             packageBean.setName(parseName(packageText.get(0)));
             packageBean.setRoot(isRootPackage(packageText.get(0)));
+            packageBean.setObjects(getObjects());
         }
 
         private String parseName(String text) {
@@ -80,18 +81,32 @@ public class Parser {
         private List<ObjectBean> getObjects() {
             List<ObjectBean> objects = new ArrayList<ObjectBean>();
             List<String> objectText = null;
+            ObjectBean currentBean = null;
             for (String paragraph : packageText) {
                 if (OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
                     objectText = new ArrayList<String>();
+                    currentBean = new ObjectBean();
+                    currentBean.setName(getObjectName(paragraph));
+
                 }
                 if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
+                    objects.add(currentBean);
                     objectText = null;
                 }
                 if (objectText != null) {
                     objectText.add(paragraph);
                 }
             }
-            return null;
+            return objects;
+        }
+
+        private String getObjectName(String openTag){
+            int beginPosition = openTag.indexOf("<");
+            int endPosition = openTag.indexOf("(");
+            if(endPosition < 0){
+                endPosition = openTag.indexOf(">");
+            }
+            return openTag.substring(beginPosition + 1, endPosition).trim();
         }
     }
 }
