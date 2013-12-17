@@ -2,6 +2,7 @@ package com.epam.java.wordparser;
 
 import com.epam.java.wordparser.beans.ObjectBean;
 import com.epam.java.wordparser.beans.PackageBean;
+import com.epam.java.wordparser.beans.ParameterBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class Parser {
     private static final Pattern OBJECT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_OPEN);
     private static final Pattern OBJECT_CLOSE_PATTERN = Pattern.compile(ParserConstants.OBJECT_CLOSE);
     private static final Pattern PARAMETER_PATTERN = Pattern.compile(ParserConstants.PARAMATER);
+    private static final Pattern ADDITIONAL_COMMAND_PATTERN = Pattern.compile(ParserConstants.ADDITIONAL_COMMAND);
 
     public Parser(Map<Long, String> text) {
         this.text = text;
@@ -84,20 +86,24 @@ public class Parser {
         private List<ObjectBean> getObjects() {
             List<ObjectBean> objects = new ArrayList<ObjectBean>();
             List<String> objectText = null;
+            List<ParameterBean> parameterList = null;
             ObjectBean currentBean = null;
             for (String paragraph : packageText) {
                 if (OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
                     objectText = new ArrayList<String>();
+                    parameterList = new ArrayList<ParameterBean>();
                     currentBean = new ObjectBean();
                     currentBean.setName(getObjectName(paragraph));
 
                 }
                 if (PARAMETER_PATTERN.matcher(paragraph).matches()) {
-                    //System.out.println(paragraph);
+                    parameterList.add(parseParameter(paragraph));
                 }
                 if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
+                    currentBean.setParameters(parameterList);
                     objects.add(currentBean);
                     objectText = null;
+                    parameterList = null;
                 }
                 if (objectText != null) {
                     objectText.add(paragraph);
@@ -113,6 +119,18 @@ public class Parser {
                 endPosition = openTag.indexOf(">");
             }
             return openTag.substring(beginPosition + 1, endPosition).trim();
+        }
+
+        private ParameterBean parseParameter(String str){
+            if(ADDITIONAL_COMMAND_PATTERN.matcher(str).matches()){
+
+            } else {
+                String name = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
+                ParameterBean result = new ParameterBean();
+                result.setName(name);
+                return result;
+            }
+            return null;
         }
     }
 }
