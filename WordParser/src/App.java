@@ -9,6 +9,7 @@ import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.poifs.filesystem.*;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.apache.poi.xwpf.usermodel.IBodyElement;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.extractor.ExtractorFactory;
 import org.apache.poi.hpsf.DocumentSummaryInformation;
@@ -21,8 +22,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 public class App {
 
-	public static void main(String[] args) throws Exception {
-		/**This is the document that you want to read using Java.**/
+    public static void main(String[] args) throws Exception {
+        /**This is the document that you want to read using Java.**/
         //String fileName = "D:\\Projects\\NPA_DIPLOM\\WordParser\\word_docs\\test2.docx";
         String fileName = "C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx";
         /**Method call to read the document (demonstrate some useage of POI)**/
@@ -55,14 +56,14 @@ public class App {
         fis.close();
         fos.close();               */
         open();
-	}
+    }
 
     private static void open() {
 
         InputStream fs = null;
         try {
-            //fs = new FileInputStream("D:\\Projects\\Diplom\\Diplom\\WordParser\\word_docs\\test2.docx");
-            fs = new FileInputStream("C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx");
+            fs = new FileInputStream("D:\\Projects\\Diplom\\Diplom\\WordParser\\word_docs\\test2.docx");
+            //fs = new FileInputStream("C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -75,11 +76,13 @@ public class App {
 
         StringBuilder textDoc = new StringBuilder();
         Map<Long, String> paragraphs = new HashMap<Long, String>();
-        for (Integer i = 0; i < doc.getParagraphs().size() ; i++) {
-            XWPFParagraph paragraph = doc.getParagraphs().get(i);
-            //paragraph.getCTP().getRArray().
-            System.out.println(")" + paragraph.getParagraphText());
-            paragraphs.put(Long.parseLong(i.toString()), paragraph.getParagraphText());
+        for (Integer i = 0; i < doc.getBodyElements().size(); i++) {
+            IBodyElement bodyElement = doc.getBodyElements().get(i);
+            if (bodyElement instanceof XWPFParagraph) {
+                XWPFParagraph paragraph = (XWPFParagraph) bodyElement;
+                //paragraph.getCTP().getRArray().
+                System.out.println(paragraph.getParagraphText());
+                paragraphs.put(Long.parseLong(i.toString()), paragraph.getParagraphText());
             /*for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
                 CTR run = paragraph.getCTP().getRArray()[j];
 
@@ -94,10 +97,8 @@ public class App {
                     //text.setStringValue("Success!");
                 }
             } */
-        }
-        Parser parser = new Parser(paragraphs);
-        parser.parseText();
-        //System.out.print(textDoc);
+            }
+            //System.out.print(textDoc);
 
         /*try {
             doc.write(new FileOutputStream("C:\\output.docx"));
@@ -106,5 +107,8 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }        */
+        }
+        Parser parser = new Parser(paragraphs);
+        parser.parseText();
     }
 }

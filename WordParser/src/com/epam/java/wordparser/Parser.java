@@ -17,6 +17,7 @@ public class Parser {
     private static final Pattern PACKAGE_CLOSE_PATTERN = Pattern.compile(ParserConstants.PACKAGE_CLOSE);
     private static final Pattern OBJECT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_OPEN);
     private static final Pattern OBJECT_CLOSE_PATTERN = Pattern.compile(ParserConstants.OBJECT_CLOSE);
+    private static final Pattern PARAMETER_PATTERN = Pattern.compile(ParserConstants.PARAMATER);
 
     public Parser(Map<Long, String> text) {
         this.text = text;
@@ -29,22 +30,24 @@ public class Parser {
         List<String> packageText = null;
         for (long i = 0; i < text.size(); i++) {
             String currentParagraph = text.get(i);
-            if (PACKAGE_OPEN_PATTERN.matcher(currentParagraph).matches()) {
-                startPackage = i;
-                packageText = new ArrayList<String>();
-            }
-            if (packageText != null) {
-                packageText.add(currentParagraph);
-            }
-            if (PACKAGE_CLOSE_PATTERN.matcher(currentParagraph).matches()) {
-                endPackage = i;
-                if (packageText != null) {
-                    PackageParser packageParser = new PackageParser(packageText);
-                    packageParsers.add(packageParser);
+            if (currentParagraph != null) {
+                if (PACKAGE_OPEN_PATTERN.matcher(currentParagraph).matches()) {
+                    startPackage = i;
+                    packageText = new ArrayList<String>();
                 }
-                startPackage = -1;
-                endPackage = -1;
-                packageText = null;
+                if (packageText != null) {
+                    packageText.add(currentParagraph);
+                }
+                if (PACKAGE_CLOSE_PATTERN.matcher(currentParagraph).matches()) {
+                    endPackage = i;
+                    if (packageText != null) {
+                        PackageParser packageParser = new PackageParser(packageText);
+                        packageParsers.add(packageParser);
+                    }
+                    startPackage = -1;
+                    endPackage = -1;
+                    packageText = null;
+                }
             }
         }
         for (PackageParser parser : packageParsers) {
@@ -74,7 +77,7 @@ public class Parser {
             return text.substring(begin, end);
         }
 
-        private boolean isRootPackage(String tag){
+        private boolean isRootPackage(String tag) {
             return PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
         }
 
@@ -89,6 +92,9 @@ public class Parser {
                     currentBean.setName(getObjectName(paragraph));
 
                 }
+                if (PARAMETER_PATTERN.matcher(paragraph).matches()) {
+                    //System.out.println(paragraph);
+                }
                 if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
                     objects.add(currentBean);
                     objectText = null;
@@ -100,10 +106,10 @@ public class Parser {
             return objects;
         }
 
-        private String getObjectName(String openTag){
+        private String getObjectName(String openTag) {
             int beginPosition = openTag.indexOf("<");
             int endPosition = openTag.indexOf("(");
-            if(endPosition < 0){
+            if (endPosition < 0) {
                 endPosition = openTag.indexOf(">");
             }
             return openTag.substring(beginPosition + 1, endPosition).trim();
