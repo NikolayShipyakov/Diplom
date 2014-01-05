@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class Parser {
     List<PackageBean> packagesList = new ArrayList<PackageBean>();
-    private Map<Long, String> text;
+    private List<String> text;
     private static final Pattern PACKAGE_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_OPEN);
     private static final Pattern PACKAGE_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_ROOT_OPEN);
     private static final Pattern PACKAGE_CLOSE_PATTERN = Pattern.compile(ParserConstants.PACKAGE_CLOSE);
@@ -21,7 +21,7 @@ public class Parser {
     private static final Pattern PARAMETER_PATTERN = Pattern.compile(ParserConstants.PARAMATER);
     private static final Pattern ADDITIONAL_COMMAND_PATTERN = Pattern.compile(ParserConstants.ADDITIONAL_COMMAND);
 
-    public Parser(Map<Long, String> text) {
+    public Parser(List<String> text) {
         this.text = text;
     }
 
@@ -30,7 +30,7 @@ public class Parser {
         long startPackage = -1;
         long endPackage = -1;
         List<String> packageText = null;
-        for (long i = 0; i < text.size(); i++) {
+        for (int i = 0; i < text.size(); i++) {
             String currentParagraph = text.get(i);
             if (currentParagraph != null) {
                 if (PACKAGE_OPEN_PATTERN.matcher(currentParagraph).matches()) {
@@ -96,8 +96,19 @@ public class Parser {
                     currentBean.setName(getObjectName(paragraph));
 
                 }
-                if (PARAMETER_PATTERN.matcher(paragraph).matches()) {
-                    parameterList.add(parseParameter(paragraph));
+                if (PARAMETER_PATTERN.matcher(paragraph).find()) {
+                    String[] words = paragraph.split("\\s+");
+                    for (String word : words) {
+                        if (PARAMETER_PATTERN.matcher(word).matches()) {
+                            try {
+                                 parameterList.add(parseParameter(word));
+                            }catch (Exception e){
+                                e.printStackTrace();
+                                System.out.println(paragraph);
+                                System.out.println(word);
+                            }
+                        }
+                    }
                 }
                 if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
                     currentBean.setParameters(parameterList);
