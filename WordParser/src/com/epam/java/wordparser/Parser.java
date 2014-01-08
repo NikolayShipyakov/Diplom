@@ -101,8 +101,8 @@ public class Parser {
                     for (String word : words) {
                         if (PARAMETER_PATTERN.matcher(word).matches()) {
                             try {
-                                 parameterList.add(parseParameter(word));
-                            }catch (Exception e){
+                                parameterList.add(parseParameter(word));
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 System.out.println(paragraph);
                                 System.out.println(word);
@@ -132,16 +132,34 @@ public class Parser {
             return openTag.substring(beginPosition + 1, endPosition).trim();
         }
 
-        private ParameterBean parseParameter(String str){
-            if(ADDITIONAL_COMMAND_PATTERN.matcher(str).matches()){
+        private ParameterBean parseParameter(String str) {
+            ParameterBean result;
+            if (ADDITIONAL_COMMAND_PATTERN.matcher(str).matches()) {
+                result = new ParameterBean();
+                String[] parameters = str.substring(str.indexOf("(") + 1, str.indexOf(")")).split(",");
+                String name = str.substring(str.indexOf("{") + 1, str.indexOf("(")).trim();
+                result.setName(name);
+                result.setAdditionalCommand(true);
 
+                if (parameters.length > 0 && parameters[0] != null && !ParserConstants.EMPTY_STRING.equals(parameters[0])) {
+                    result.setParameter1(parameters[0]);
+                }
+                if (parameters.length > 1 && parameters[1] != null && !ParserConstants.EMPTY_STRING.equals(parameters[1])) {
+                    result.setParameter2(parameters[1]);
+                }
+                if (parameters.length > 2 && parameters[2] != null && !ParserConstants.EMPTY_STRING.equals(parameters[2])) {
+                    result.setParameter3(parameters[2]);
+                }
+                if (parameters.length > 3 && parameters[3] != null && !ParserConstants.EMPTY_STRING.equals(parameters[3])) {
+                    result.setParameter4(parameters[3]);
+                }
             } else {
                 String name = str.substring(str.indexOf("{") + 1, str.indexOf("}"));
-                ParameterBean result = new ParameterBean();
+                result = new ParameterBean();
                 result.setName(name);
-                return result;
+
             }
-            return null;
+            return result;
         }
     }
 }

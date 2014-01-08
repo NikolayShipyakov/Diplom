@@ -12,4 +12,7 @@ public interface ParserConstants {
    //Parameter constants
    String PARAMATER = "\\{\\s*[а-яА-Я\\w\\s\\.\\,\\(\\)]*\\s*\\}";
    String ADDITIONAL_COMMAND = "\\{\\s*[а-яА-Я\\w]*\\s*\\([а-яА-Я\\w\\s]*(\\,[а-яА-Я\\w\\s]*)*\\)(.[а-яА-Я\\w]*){0,1}\\s*\\}";
+
+   // Common constants
+   String EMPTY_STRING = "";
 }
