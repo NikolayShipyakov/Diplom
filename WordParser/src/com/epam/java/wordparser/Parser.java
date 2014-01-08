@@ -17,6 +17,7 @@ public class Parser {
     private static final Pattern PACKAGE_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_ROOT_OPEN);
     private static final Pattern PACKAGE_CLOSE_PATTERN = Pattern.compile(ParserConstants.PACKAGE_CLOSE);
     private static final Pattern OBJECT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_OPEN);
+    private static final Pattern OBJECT_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_ROOT_OPEN);
     private static final Pattern OBJECT_CLOSE_PATTERN = Pattern.compile(ParserConstants.OBJECT_CLOSE);
     private static final Pattern PARAMETER_PATTERN = Pattern.compile(ParserConstants.PARAMATER);
     private static final Pattern ADDITIONAL_COMMAND_PATTERN = Pattern.compile(ParserConstants.ADDITIONAL_COMMAND);
