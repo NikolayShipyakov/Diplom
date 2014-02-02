@@ -27,6 +27,7 @@ public class Parser {
     }
 
     public List<PackageBean> parseText() {
+        List<PackageBean> result = new ArrayList<PackageBean>();
         List<PackageParser> packageParsers = new ArrayList<PackageParser>();
         long startPackage = -1;
         long endPackage = -1;
@@ -55,8 +56,9 @@ public class Parser {
         }
         for (PackageParser parser : packageParsers) {
             parser.parsePackage();
+            result.add(parser.packageBean);
         }
-        return null;
+        return result;
     }
 
     private class PackageParser {

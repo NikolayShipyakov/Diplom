@@ -3,6 +3,7 @@ import java.io.*;
 import java.util.*;
 
 import com.epam.java.wordparser.Parser;
+import com.epam.java.wordparser.beans.PackageBean;
 import org.apache.poi.POITextExtractor;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -61,6 +62,6 @@ public class App {
             }
         }
         Parser parser = new Parser(paragraphs);
-        parser.parseText();
+        List<PackageBean> packages = parser.parseText();
     }
 }
