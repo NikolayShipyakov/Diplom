@@ -9,8 +9,8 @@ import java.util.List;
 public class App {
     public static void main(String[] args) throws Exception{
         String wordFileName = "D:\\programming\\java\\diplom\\Diplom\\WordParser\\word_docs\\test2.docx";
-        String eaFileName = "";
+        String eaFileName = "D:\\test.EAP";
         List<PackageBean> searchParameters= Reader.open(wordFileName);
-        new EAParser().parse(eaFileName);
+        new EAParser(eaFileName).search(searchParameters);
     }
 }

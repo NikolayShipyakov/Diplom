@@ -11,26 +11,28 @@ import org.sparx.Element;
 import org.sparx.Repository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class EAParser {
-    public Model parse(String path) {
-        Repository r = new Repository();
+    private static final Repository r = new Repository();
+
+    public EAParser(String path) {
         boolean b = r.OpenFile(path);
+    }
+
+    public Model search(List<PackageBean> searchParameters){
         Model model = new Model();
-        model.setPackages(getModels(r));
+        model.setPackages(getModels(searchParameters));
         return null;
     }
 
-    public Model search(String path, List<PackageBean> searchParameters){
-        Repository r = new Repository();
-        boolean b = r.OpenFile(path);
-        Model model = new Model();
-        model.setPackages(null);
-        return null;
-    }
-
-    private List<EAPackage> getModels(Repository r) {
+    private List<EAPackage> getModels(List<PackageBean> searchBeans) {
+        Set<String> packageNames = new HashSet<String>();
+        for(PackageBean pb : searchBeans){
+            packageNames.add(pb.getName());
+        }
         List<EAPackage> packages = new ArrayList<EAPackage>();
         for (org.sparx.Package p : r.GetModels()) {
             List<EAPackage> innerPackages = getPackages(p);
