@@ -1,3 +1,4 @@
+package com.epam.java.wordparser;
 
 import java.io.*;
 import java.util.*;
@@ -18,16 +19,16 @@ import org.apache.poi.hwpf.usermodel.HeaderStories;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
-public class App {
+public class Reader {
 
     public static void main(String[] args) throws Exception {
         /**This is the document that you want to read using Java.**/
         //String fileName = "D:\\Projects\\NPA_DIPLOM\\WordParser\\word_docs\\test2.docx";
-        String fileName = "C:\\programming\\MyNPA\\WordParser\\word_docs\\test2.docx";
+        String fileName = "D:\\programming\\java\\diplom\\Diplom\\WordParser\\word_docs\\test2.docx";
         open(fileName);
     }
 
-    private static void open(String fileName) {
+    public static List<PackageBean> open(String fileName) {
 
         InputStream fs = null;
         try {
@@ -62,6 +63,6 @@ public class App {
             }
         }
         Parser parser = new Parser(paragraphs);
-        List<PackageBean> packages = parser.parseText();
+        return parser.parseText();
     }
 }

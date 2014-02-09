@@ -3,14 +3,20 @@ package com.epam.java.wordparser;
 import com.epam.java.wordparser.beans.ObjectBean;
 import com.epam.java.wordparser.beans.PackageBean;
 import com.epam.java.wordparser.beans.ParameterBean;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
 import java.util.regex.Pattern;
 
 public class Parser {
+
+    public static final Logger logger= Logger.getLogger(Parser.class);
+
     List<PackageBean> packagesList = new ArrayList<PackageBean>();
     private List<String> text;
     private static final Pattern PACKAGE_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_OPEN);
@@ -58,6 +64,7 @@ public class Parser {
             parser.parsePackage();
             result.add(parser.packageBean);
         }
+        logger.debug("Doc parse result:" + result);
         return result;
     }
 
@@ -106,9 +113,7 @@ public class Parser {
                             try {
                                 parameterList.add(parseParameter(word));
                             } catch (Exception e) {
-                                e.printStackTrace();
-                                System.out.println(paragraph);
-                                System.out.println(word);
+                                logger.error(e);
                             }
                         }
                     }

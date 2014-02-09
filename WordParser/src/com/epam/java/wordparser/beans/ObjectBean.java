@@ -21,4 +21,16 @@ public class ObjectBean {
     public void setParameters(List<ParameterBean> parameters) {
         this.parameters = parameters;
     }
+
+    public String toString() {
+        String result = "name = " + name;
+        if (parameters != null) {
+            result += ", parameters [";
+            for (ParameterBean parameter : parameters) {
+                result += parameter.toString() + ",";
+            }
+            result += "]";
+        }
+        return result;
+    }
 }

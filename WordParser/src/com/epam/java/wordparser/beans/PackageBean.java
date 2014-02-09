@@ -30,4 +30,15 @@ public class PackageBean {
     public void setObjects(List<ObjectBean> objects) {
         this.objects = objects;
     }
+
+    public String toString(){
+        String result = "name = " + name;
+        result += ", root = " + root;
+        result += ", objects[";
+        for(ObjectBean bean : objects){
+            result += bean.toString() + ",";
+        }
+        result += "]";
+        return result;
+    }
 }
