@@ -1,0 +1,44 @@
+package com.epam.java.report.wordparser.beans;
+
+import java.util.List;
+
+public class PackageBean {
+    private String name;
+    private boolean root;
+    private List<ObjectBean> objects;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isRoot() {
+        return root;
+    }
+
+    public void setRoot(boolean root) {
+        this.root = root;
+    }
+
+    public List<ObjectBean> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<ObjectBean> objects) {
+        this.objects = objects;
+    }
+
+    public String toString(){
+        String result = "name = " + name;
+        result += ", root = " + root;
+        result += ", objects[";
+        for(ObjectBean bean : objects){
+            result += bean.toString() + ",";
+        }
+        result += "]";
+        return result;
+    }
+}
