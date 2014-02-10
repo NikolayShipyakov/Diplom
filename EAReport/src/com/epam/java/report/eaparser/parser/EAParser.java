@@ -5,6 +5,7 @@ import com.epam.java.report.eaparser.beans.EAElement;
 import com.epam.java.report.eaparser.beans.EAPackage;
 import com.epam.java.report.eaparser.com.epam.java.ea.enums.DiagramType;
 import com.epam.java.report.eaparser.com.epam.java.ea.enums.ElementType;
+import com.epam.java.report.wordparser.beans.PackageBean;
 import org.sparx.Diagram;
 import org.sparx.Element;
 import org.sparx.Repository;
@@ -18,6 +19,14 @@ public class EAParser {
         boolean b = r.OpenFile(path);
         Model model = new Model();
         model.setPackages(getModels(r));
+        return null;
+    }
+
+    public Model search(String path, List<PackageBean> searchParameters){
+        Repository r = new Repository();
+        boolean b = r.OpenFile(path);
+        Model model = new Model();
+        model.setPackages(null);
         return null;
     }
 
