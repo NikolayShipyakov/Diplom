@@ -80,7 +80,7 @@ public class Parser {
         }
 
         private String parseName(String text) {
-            int begin = text.indexOf("'");
+            int begin = text.indexOf("'") + 1;
             int end = text.indexOf("'", begin + 1);
             return text.substring(begin, end);
         }
