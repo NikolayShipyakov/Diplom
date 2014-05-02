@@ -58,7 +58,9 @@ public class EAParser {
                             org.sparx.Collection<Diagram> diagrams = pack.GetDiagrams();
                             for (Diagram d : diagrams) {
                                 for (ParameterBean param : o.getParameters()){
-                                   System.out.println("Param." + param.getName() + "=" + new BaseObjectHelper(d).getAttributeByName(param.getName()));
+                                   String value = new BaseObjectHelper(d).getAttributeByName(param.getName());
+                                   param.setParameterValue(value);
+                                   System.out.println("Param." + param.getName() + "=" + value);
                                 }
                             }
                         }
@@ -68,7 +70,9 @@ public class EAParser {
                             org.sparx.Collection<Element> elements = pack.GetElements();
                             for (Element e : elements) {
                                 for (ParameterBean param : o.getParameters()){
-                                    System.out.println("Param." + param.getName() + "=" + new BaseObjectHelper(e).getAttributeByName(param.getName()));
+                                    String value = new BaseObjectHelper(e).getAttributeByName(param.getName());
+                                    param.setParameterValue(value);
+                                    System.out.println("Param." + param.getName() + "=" + value);
                                 }
                             }
                         }

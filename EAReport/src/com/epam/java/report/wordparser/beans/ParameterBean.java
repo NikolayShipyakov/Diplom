@@ -8,6 +8,16 @@ public class ParameterBean {
     private String parameter3;
     private String parameter4;
 
+    public String getParameterValue() {
+        return parameterValue;
+    }
+
+    public void setParameterValue(String parameterValue) {
+        this.parameterValue = parameterValue;
+    }
+
+    private String parameterValue;
+
     public String getName() {
         return name;
     }
