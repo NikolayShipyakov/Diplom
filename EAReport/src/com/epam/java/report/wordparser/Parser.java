@@ -15,14 +15,6 @@ public class Parser {
 
     List<PackageBean> packagesList = new ArrayList<PackageBean>();
     private List<String> text;
-    private static final Pattern PACKAGE_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_OPEN);
-    private static final Pattern PACKAGE_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.PACKAGE_ROOT_OPEN);
-    private static final Pattern PACKAGE_CLOSE_PATTERN = Pattern.compile(ParserConstants.PACKAGE_CLOSE);
-    private static final Pattern OBJECT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_OPEN);
-    private static final Pattern OBJECT_ROOT_OPEN_PATTERN = Pattern.compile(ParserConstants.OBJECT_ROOT_OPEN);
-    private static final Pattern OBJECT_CLOSE_PATTERN = Pattern.compile(ParserConstants.OBJECT_CLOSE);
-    private static final Pattern PARAMETER_PATTERN = Pattern.compile(ParserConstants.PARAMATER);
-    private static final Pattern ADDITIONAL_COMMAND_PATTERN = Pattern.compile(ParserConstants.ADDITIONAL_COMMAND);
 
     public Parser(List<String> text) {
         this.text = text;
@@ -37,14 +29,14 @@ public class Parser {
         for (int i = 0; i < text.size(); i++) {
             String currentParagraph = text.get(i);
             if (currentParagraph != null) {
-                if (PACKAGE_OPEN_PATTERN.matcher(currentParagraph).matches()) {
+                if (Utils.PACKAGE_OPEN_PATTERN.matcher(currentParagraph).matches()) {
                     startPackage = i;
                     packageText = new ArrayList<String>();
                 }
                 if (packageText != null) {
                     packageText.add(currentParagraph);
                 }
-                if (PACKAGE_CLOSE_PATTERN.matcher(currentParagraph).matches()) {
+                if (Utils.PACKAGE_CLOSE_PATTERN.matcher(currentParagraph).matches()) {
                     endPackage = i;
                     if (packageText != null) {
                         PackageParser packageParser = new PackageParser(packageText);
@@ -86,7 +78,7 @@ public class Parser {
         }
 
         private boolean isRootPackage(String tag) {
-            return PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
+            return Utils.PACKAGE_ROOT_OPEN_PATTERN.matcher(tag).matches();
         }
 
         private List<ObjectBean> getObjects() {
@@ -95,17 +87,17 @@ public class Parser {
             List<ParameterBean> parameterList = null;
             ObjectBean currentBean = null;
             for (String paragraph : packageText) {
-                if (OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
+                if (Utils.OBJECT_OPEN_PATTERN.matcher(paragraph).matches()) {
                     objectText = new ArrayList<String>();
                     parameterList = new ArrayList<ParameterBean>();
                     currentBean = new ObjectBean();
                     currentBean.setName(getObjectName(paragraph));
 
                 }
-                if (PARAMETER_PATTERN.matcher(paragraph).find()) {
+                if (Utils.PARAMETER_PATTERN.matcher(paragraph).find()) {
                     String[] words = paragraph.split("\\s+");
                     for (String word : words) {
-                        if (PARAMETER_PATTERN.matcher(word).matches()) {
+                        if (Utils.PARAMETER_PATTERN.matcher(word).matches()) {
                             try {
                                 parameterList.add(parseParameter(word));
                             } catch (Exception e) {
@@ -114,7 +106,7 @@ public class Parser {
                         }
                     }
                 }
-                if (OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
+                if (Utils.OBJECT_CLOSE_PATTERN.matcher(paragraph).matches()) {
                     currentBean.setParameters(parameterList);
                     objects.add(currentBean);
                     objectText = null;
@@ -138,7 +130,7 @@ public class Parser {
 
         private ParameterBean parseParameter(String str) {
             ParameterBean result;
-            if (ADDITIONAL_COMMAND_PATTERN.matcher(str).matches()) {
+            if (Utils.ADDITIONAL_COMMAND_PATTERN.matcher(str).matches()) {
                 result = new ParameterBean();
                 String[] parameters = str.substring(str.indexOf("(") + 1, str.indexOf(")")).split(",");
                 String name = str.substring(str.indexOf("{") + 1, str.indexOf("(")).trim();

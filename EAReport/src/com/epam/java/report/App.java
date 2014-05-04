@@ -2,6 +2,7 @@ package com.epam.java.report;
 
 import com.epam.java.report.eaparser.parser.EAParser;
 import com.epam.java.report.wordparser.Reader;
+import com.epam.java.report.wordparser.Replacer;
 import com.epam.java.report.wordparser.beans.PackageBean;
 
 import java.util.List;
@@ -14,5 +15,6 @@ public class App {
         String eaFileName = "D:\\test.EAP";
         List<PackageBean> searchParameters= Reader.open(wordFileName);
         new EAParser(eaFileName).search(searchParameters);
+        new Replacer().createResultDoc(searchParameters, wordFileName);
     }
 }

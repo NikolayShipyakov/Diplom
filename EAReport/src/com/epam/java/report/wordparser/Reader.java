@@ -3,10 +3,7 @@ package com.epam.java.report.wordparser;
 import com.epam.java.report.wordparser.beans.PackageBean;
 import org.apache.poi.xwpf.usermodel.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,6 +49,11 @@ public class Reader {
                     paragraphs.add(rowText.toString());
                 }
             }
+        }
+        try {
+            doc.write(new FileOutputStream("C:\\b.docx"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         Parser parser = new Parser(paragraphs);
         return parser.parseText();
