@@ -1,5 +1,8 @@
 package com.epam.java.report.wordparser.beans;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class ParameterBean {
     private String name;
     private boolean additionalCommand = false;
@@ -8,15 +11,19 @@ public class ParameterBean {
     private String parameter3;
     private String parameter4;
 
-    public String getParameterValue() {
-        return parameterValue;
+    public List<String> getParameterValue() {
+        return parameterValues;
     }
 
-    public void setParameterValue(String parameterValue) {
-        this.parameterValue = parameterValue;
+    public void setParameterValue(List<String> parameterValue) {
+        this.parameterValues = parameterValues;
     }
 
-    private String parameterValue;
+    public void addParameterValue(String value){
+        this.parameterValues.add(value);
+    }
+
+    private List<String> parameterValues = new LinkedList<String>();
 
     public String getName() {
         return name;

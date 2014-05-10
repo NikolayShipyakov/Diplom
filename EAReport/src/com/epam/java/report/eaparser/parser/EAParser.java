@@ -59,7 +59,7 @@ public class EAParser {
                             for (Diagram d : diagrams) {
                                 for (ParameterBean param : o.getParameters()){
                                    String value = new BaseObjectHelper(d).getAttributeByName(param.getName());
-                                   param.setParameterValue(value);
+                                   param.addParameterValue(value);
                                    System.out.println("Param." + param.getName() + "=" + value);
                                 }
                             }
@@ -71,7 +71,7 @@ public class EAParser {
                             for (Element e : elements) {
                                 for (ParameterBean param : o.getParameters()){
                                     String value = new BaseObjectHelper(e).getAttributeByName(param.getName());
-                                    param.setParameterValue(value);
+                                    param.addParameterValue(value);
                                     System.out.println("Param." + param.getName() + "=" + value);
                                 }
                             }

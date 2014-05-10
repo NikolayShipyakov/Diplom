@@ -2,6 +2,7 @@ package com.epam.java.report.wordparser;
 
 import com.epam.java.report.wordparser.beans.ObjectBean;
 import com.epam.java.report.wordparser.beans.PackageBean;
+import com.epam.java.report.wordparser.beans.ParameterBean;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.openxml4j.opc.OPCPackage;
@@ -68,18 +69,63 @@ public class Replacer {
                     if (paragraphText.indexOf("<" + currentPackageBean.getObjects().get(k).getName()) >= 0) {
                         currentObjectBean = currentPackageBean.getObjects().remove(k);
                     }
-                    // Считаем парграф за строку пока что
+
+                }
+                // Считаем парграф за строку пока что
+                for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
+                    CTR run = paragraph.getCTP().getRArray()[j];
+                    for (int l = 0; l < run.getTArray().length; l++) {
+                        CTText text = run.getTArray()[l];
+                        if (text.getStringValue().indexOf(currentObjectBean.getName()) > -1) {
+                            clear(i, j, l, ElementTypes.OBJECT_OPEN);
+                        }
+                    }
+                }
+
+            }
+
+            if (Utils.PARAMETER_PATTERN.matcher(paragraphText).find()) {
+                ParameterBean parameterBean = null;
+                for (ParameterBean param : currentObjectBean.getParameters()) {
+                    if(paragraphText.indexOf("{" + param.getName()) > -1) {
+                        parameterBean = param;
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
+                    CTR run = paragraph.getCTP().getRArray()[j];
+                    for (int l = 0; l < run.getTArray().length; l++) {
+                        CTText text = run.getTArray()[l];
+                        if (text.getStringValue().indexOf(parameterBean.getName()) > -1) {
+                            clear(i, j, l, ElementTypes.PARAMETER_OPEN);
+                            text.setStringValue(parameterBean.getParameterValue().get(0));
+                        }
+                    }
+                }
+            }
+
+            if(Utils.OBJECT_CLOSE_PATTERN.matcher(paragraphText).matches()){
                     for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
                         CTR run = paragraph.getCTP().getRArray()[j];
                         for (int l = 0; l < run.getTArray().length; l++) {
                             CTText text = run.getTArray()[l];
                             if (text.getStringValue().indexOf(currentObjectBean.getName()) > -1) {
-                                clear(i, k, j, ElementTypes.OBJECT);
+                                clear(i, j, l, ElementTypes.OBJECT_CLOSE);
                             }
+                        }
+                }
+            }
+            if(Utils.PACKAGE_CLOSE_PATTERN.matcher(paragraphText).matches()){
+                for (int j = 0; j < paragraph.getCTP().getRArray().length; j++) {
+                    CTR run = paragraph.getCTP().getRArray()[j];
+                    for (int l = 0; l < run.getTArray().length; l++) {
+                        CTText text = run.getTArray()[l];
+                        if (text.getStringValue().indexOf(currentPackageBean.getName()) > -1) {
+                            clear(i, j, l, ElementTypes.PACKAGE_CLOSE);
                         }
                     }
                 }
-
             }
         }
 
@@ -92,28 +138,37 @@ public class Replacer {
         }
     }
 
-    private void clear(int packageNumber, int ctrNumber, int cttNumber, ElementTypes type){
+    private void clear(int paragraphNumber, int ctrNumber, int cttNumber, ElementTypes type){
         String openSymbol = "";
         String closeSymbol = "";
         switch (type){
-            case PACKAGE:
+            case PACKAGE_OPEN:
                 openSymbol = "{['";
                 closeSymbol = "']}";
                 break;
-            case OBJECT:
+            case OBJECT_OPEN:
                 openSymbol = "<";
                 closeSymbol = ">";
                 break;
-            case PARAMETER:
+            case PARAMETER_OPEN:
                 openSymbol = "{";
                 closeSymbol = "}";
+                break;
+            case PACKAGE_CLOSE:
+                openSymbol = "{[";
+                closeSymbol = "]}";
+                break;
+            case OBJECT_CLOSE:
+                openSymbol = "<";
+                closeSymbol = ">";
                 break;
         }
         boolean active = true;
         List<XWPFParagraph> paragraphs = doc.getParagraphs();
-        for(int i = packageNumber; i < paragraphs.size(); i++){
-            for (int j = (i == packageNumber) ? (((ctrNumber + 1) < paragraphs.get(i).getCTP().getRArray().length) ? ctrNumber + 1 : 0) : 0 ; j < paragraphs.get(i).getCTP().getRArray().length; j ++){
-                for(int k = (j == ctrNumber) ? (((cttNumber + 1) < paragraphs.get(i).getCTP().getRArray(j).getTArray().length) ? cttNumber + 1 : 0) : 0 ; k < paragraphs.get(i).getCTP().getRArray(j).getTArray().length; k ++){
+        paragraphs.get(paragraphNumber).getCTP().getRArray(ctrNumber).getTArray(cttNumber).setStringValue("");
+        for(int i = paragraphNumber; (active && i < paragraphs.size()); i++){
+            for (int j =  ((ctrNumber + 1) < paragraphs.get(i).getCTP().getRArray().length) ? ctrNumber + 1 : 0; (active && j < paragraphs.get(i).getCTP().getRArray().length); j ++){
+                for(int k = ((cttNumber + 1) < paragraphs.get(i).getCTP().getRArray(j).getTArray().length) ? cttNumber + 1 : 0; (active && k < paragraphs.get(i).getCTP().getRArray(j).getTArray().length); k ++){
                     if(active) {
                         String strValue = paragraphs.get(i).getCTP().getRArray(j).getTArray()[k].getStringValue();
                         paragraphs.get(i).getCTP().getRArray(j).getTArray()[k].setStringValue("");
@@ -125,9 +180,9 @@ public class Replacer {
               }
         }
         active = true;
-        for(int i = packageNumber; i >= 0; i --){
-            for (int j = (i == packageNumber) ? (((ctrNumber - 1) >= 0) ? ctrNumber - 1 : paragraphs.get(i).getCTP().getRArray().length - 1) : paragraphs.get(i).getCTP().getRArray().length - 1; j >= 0; j --){
-                for(int k = (j == ctrNumber) ? (((cttNumber - 1) >= 0) ? cttNumber - 1 : paragraphs.get(i).getCTP().getRArray(j).getTArray().length - 1) : paragraphs.get(i).getCTP().getRArray(j).getTArray().length - 1; k >= 0; k --){
+        for(int i = paragraphNumber; (active && i >= 0); i --){
+            for (int j = ((ctrNumber - 1) >= 0) ? ctrNumber - 1 : paragraphs.get(i).getCTP().getRArray().length - 1; (active && j >= 0); j --){
+                for(int k = ((cttNumber - 1) >= 0) ? cttNumber - 1 : paragraphs.get(i).getCTP().getRArray(j).getTArray().length - 1; (active && k >= 0); k --){
                     if (active) {
                         String strValue = paragraphs.get(i).getCTP().getRArray(j).getTArray()[k].getStringValue();
                         paragraphs.get(i).getCTP().getRArray(j).getTArray()[k].setStringValue("");
@@ -141,6 +196,6 @@ public class Replacer {
     }
 
     private enum ElementTypes{
-        PACKAGE, OBJECT, PARAMETER
+        PACKAGE_OPEN, OBJECT_OPEN, PARAMETER_OPEN, PACKAGE_CLOSE, OBJECT_CLOSE, PARAMETER_CLOSE
     }
 }
