@@ -13,6 +13,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTR;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTText;
 
 import java.io.*;
+import java.util.Calendar;
 import java.util.List;
 
 public class Replacer {
@@ -130,7 +131,7 @@ public class Replacer {
         }
 
         try {
-            doc.write(new FileOutputStream("C:\\tmpl.docx"));
+            doc.write(new FileOutputStream(generateResultPath(path)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -197,5 +198,13 @@ public class Replacer {
 
     private enum ElementTypes{
         PACKAGE_OPEN, OBJECT_OPEN, PARAMETER_OPEN, PACKAGE_CLOSE, OBJECT_CLOSE, PARAMETER_CLOSE
+    }
+
+    private String generateResultName(){
+        return (Calendar.getInstance().getTime().getTime() + ".doc").replaceAll(" ", "_");
+    }
+
+    private String generateResultPath(String path){
+        return path.substring(0, path.indexOf(".doc")) + generateResultName();
     }
 }
