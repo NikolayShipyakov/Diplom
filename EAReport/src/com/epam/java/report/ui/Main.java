@@ -2,6 +2,7 @@ package com.epam.java.report.ui;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -19,7 +20,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 
-public class Sample implements Initializable {
+import javax.swing.*;
+
+public class Main implements Initializable {
     @FXML
     private BorderPane sample;
     @FXML
@@ -33,6 +36,7 @@ public class Sample implements Initializable {
     @FXML
     private void handleTemplateAction(ActionEvent event) {
         final File importFile = fileChooser.showOpenDialog(null);
+        String s = Calendar.getInstance().getTime().toString();
         templatePath.setText(importFile.getPath());
     }
 

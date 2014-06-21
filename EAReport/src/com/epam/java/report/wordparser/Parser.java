@@ -137,16 +137,16 @@ public class Parser {
                 result.setName(name);
                 result.setAdditionalCommand(true);
 
-                if (parameters.length > 0 && parameters[0] != null && !ParserConstants.EMPTY_STRING.equals(parameters[0])) {
+                if (parameters.length > 0 && parameters[0] != null && !Utils.EMPTY_STRING.equals(parameters[0])) {
                     result.setParameter1(parameters[0]);
                 }
-                if (parameters.length > 1 && parameters[1] != null && !ParserConstants.EMPTY_STRING.equals(parameters[1])) {
+                if (parameters.length > 1 && parameters[1] != null && !Utils.EMPTY_STRING.equals(parameters[1])) {
                     result.setParameter2(parameters[1]);
                 }
-                if (parameters.length > 2 && parameters[2] != null && !ParserConstants.EMPTY_STRING.equals(parameters[2])) {
+                if (parameters.length > 2 && parameters[2] != null && !Utils.EMPTY_STRING.equals(parameters[2])) {
                     result.setParameter3(parameters[2]);
                 }
-                if (parameters.length > 3 && parameters[3] != null && !ParserConstants.EMPTY_STRING.equals(parameters[3])) {
+                if (parameters.length > 3 && parameters[3] != null && !Utils.EMPTY_STRING.equals(parameters[3])) {
                     result.setParameter4(parameters[3]);
                 }
             } else {
