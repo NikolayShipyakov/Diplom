@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.effect.ColorAdjust?>
-<AnchorPane id="sample" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="com.epam.java.report.ui.Sample">
+<AnchorPane id="sample" prefHeight="200"  prefWidth="320" xmlns:fx="http://javafx.com/fxml" fx:controller="com.epam.java.report.ui.Main">
     <children>
         <Button text="Template" prefWidth="80.0" layoutX="2" layoutY="30" onAction="#handleTemplateAction" />
         <TextField id="templatePath" layoutX="86" layoutY="30" text="" fx:id="templatePath"/>
         <Button text="Model" prefWidth="80.0" layoutX="2" layoutY="60" onAction="#handleModelAction" />
         <TextField id="eaPath" layoutX="86" layoutY="60" text="" fx:id="eaPath"/>
-        <ProgressIndicator id="progressIndicator" layoutX="2" layoutY="180" visible="false" fx:id="progressIndicator"/>
+        <ProgressIndicator id="progressIndicator" layoutX="2" layoutY="150" visible="false" fx:id="progressIndicator"/>
         <Button text="Export data" prefWidth="150.0" layoutX="2" layoutY="110" onAction="#handleExportAction" />
 
     </children>
